@@ -1,0 +1,82 @@
+definitions:
+  domainerr.BadRequest:
+    properties:
+      description:
+        type: string
+    type: object
+  song.GetAllHelper:
+    properties:
+      group:
+        type: string
+      id:
+        type: integer
+      link:
+        type: string
+      releaseDate:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+    type: object
+  song.GetAllResponse:
+    properties:
+      songs:
+        items:
+          $ref: '#/definitions/song.GetAllHelper'
+        type: array
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/songs:
+    get:
+      consumes:
+      - application/json
+      description: Get all songs with filter and pagination
+      parameters:
+      - description: Filter by group
+        in: query
+        name: group
+        type: string
+      - description: Filter by song
+        in: query
+        name: song
+        type: string
+      - description: Filter by releaseDate
+        in: query
+        name: releaseDate
+        type: string
+      - description: Filter by text
+        in: query
+        name: text
+        type: string
+      - description: Filter by link
+        in: query
+        name: link
+        type: string
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Page size for pagination
+        in: query
+        name: pageSize
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/song.GetAllResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/domainerr.BadRequest'
+      summary: Get all songs with filter and pagination
+      tags:
+      - songs
+swagger: "2.0"

@@ -1,0 +1,60 @@
+### Добавление песни
+POST http://localhost:80/api/v1/songs
+Content-Type: application/json
+
+{
+  "count": 1
+}
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 201, "Response status is not 201");
+        client.assert(response.body == null);
+    });
+%}
+
+### Удаление песни
+DELETE http://localhost:80/api/v1/songs/2
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 204, "Response status is not 204");
+        client.assert(response.body == null);
+    });
+%}
+
+### Обновление песни
+PUT http://localhost:80/api/v1/songs/2
+Content-Type: application/json
+
+{
+
+}
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 204, "Response status is not 204");
+        client.assert(response.body == null);
+    });
+%}
+
+### Получение песен
+GET http://localhost:80/api/v1/songs?page=1&pageSize=10&releaseDate=12
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body != null);
+    });
+%}
+
+### Получение песен
+GET http://localhost:80/api/v1/songs/10/text?page=-10&pageSize=100
+Content-Type: application/json
+
+> {%
+    client.test("Request executed successfully", function() {
+        client.assert(response.status === 200, "Response status is not 200");
+        client.assert(response.body != null);
+    });
+%}

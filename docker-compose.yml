@@ -1,0 +1,33 @@
+services:
+  effective-mobile-tz:
+    image: localhost:5000/effective-mobile-tz
+    ports:
+      - 35080:80
+    environment:
+      PORT: 80
+      APP_OMIT_DOTENV: true
+      MUSIC_INFO_USE_FAKE: true
+      SONG_REPOSITORY_DSN: postgresql://user:password@effective-mobile-tz-db:5432/tzdb?sslmode=disable
+#      GIN_MODE: release
+    depends_on:
+      effective-mobile-tz-db:
+        condition: service_healthy
+
+  effective-mobile-tz-db:
+    image: postgres:16
+    restart: unless-stopped
+    volumes:
+      - ./postgresql_data:/var/lib/postgresql/data
+    ports:
+      - "8431:5432"
+    command: [ "postgres" ]
+    environment:
+      POSTGRES_DB: tzdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d tzdb -U user -h effective-mobile-tz-db" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
