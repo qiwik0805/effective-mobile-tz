@@ -3,7 +3,8 @@ POST http://localhost:80/api/v1/songs
 Content-Type: application/json
 
 {
-  "count": 1
+  "group": "group1",
+  "song": "song1"
 }
 > {%
     client.test("Request executed successfully", function() {
@@ -24,12 +25,9 @@ Content-Type: application/json
 %}
 
 ### Обновление песни
-PUT http://localhost:80/api/v1/songs/2
+PUT http://localhost:80/api/v1/songs/1
 Content-Type: application/json
 
-{
-
-}
 > {%
     client.test("Request executed successfully", function() {
         client.assert(response.status === 204, "Response status is not 204");
@@ -49,7 +47,7 @@ Content-Type: application/json
 %}
 
 ### Получение песен
-GET http://localhost:80/api/v1/songs/10/text?page=-10&pageSize=100
+GET http://localhost:80/api/v1/songs/10/text?page=1&pageSize=100
 Content-Type: application/json
 
 > {%

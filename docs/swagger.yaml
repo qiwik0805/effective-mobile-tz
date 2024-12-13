@@ -1,10 +1,17 @@
 definitions:
-  domainerr.BadRequest:
+  effective-mobile-tz_internal_domain_dto_server_song.AddRequest:
     properties:
-      description:
+      group:
+        minLength: 1
         type: string
+      song:
+        minLength: 1
+        type: string
+    required:
+    - group
+    - song
     type: object
-  song.GetAllHelper:
+  effective-mobile-tz_internal_domain_dto_server_song.GetAllHelper:
     properties:
       group:
         type: string
@@ -19,12 +26,43 @@ definitions:
       text:
         type: string
     type: object
-  song.GetAllResponse:
+  effective-mobile-tz_internal_domain_dto_server_song.GetAllResponse:
     properties:
       songs:
         items:
-          $ref: '#/definitions/song.GetAllHelper'
+          $ref: '#/definitions/effective-mobile-tz_internal_domain_dto_server_song.GetAllHelper'
         type: array
+    type: object
+  effective-mobile-tz_internal_domain_dto_server_song.GetTextHelper:
+    properties:
+      verse:
+        type: string
+    type: object
+  effective-mobile-tz_internal_domain_dto_server_song.GetTextResponse:
+    properties:
+      text:
+        items:
+          $ref: '#/definitions/effective-mobile-tz_internal_domain_dto_server_song.GetTextHelper'
+        type: array
+    type: object
+  effective-mobile-tz_internal_domain_dto_server_song.UpdateRequest:
+    properties:
+      group:
+        type: string
+      link:
+        type: string
+      releaseData:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+    required:
+    - group
+    - link
+    - releaseData
+    - song
+    - text
     type: object
 info:
   contact: {}
@@ -59,6 +97,119 @@ paths:
         description: Page number for pagination
         in: query
         name: page
+        required: true
+        type: integer
+      - default: 10
+        description: Page size for pagination
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/effective-mobile-tz_internal_domain_dto_server_song.GetAllResponse'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Get all songs with filter and pagination
+      tags:
+      - songs
+    post:
+      consumes:
+      - application/json
+      description: Adds a new song to the system.
+      parameters:
+      - description: Request body for adding a song
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/effective-mobile-tz_internal_domain_dto_server_song.AddRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created"  header(X-Created-ID)
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Add a new song
+      tags:
+      - songs
+  /api/v1/songs/{songID}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a song by ID
+      parameters:
+      - description: Song ID to remove
+        in: path
+        name: songID
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Remove a song by ID
+      tags:
+      - songs
+    put:
+      consumes:
+      - application/json
+      description: Update a song by ID
+      parameters:
+      - description: Song ID to update
+        in: path
+        name: songID
+        required: true
+        type: integer
+      - description: Song update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/effective-mobile-tz_internal_domain_dto_server_song.UpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Update a song by ID
+      tags:
+      - songs
+  /api/v1/songs/{songID}/text:
+    get:
+      consumes:
+      - application/json
+      description: Get song text with pagination
+      parameters:
+      - description: Song ID
+        in: path
+        name: songID
+        required: true
+        type: integer
+      - default: 1
+        description: Page number for pagination
+        in: query
+        name: page
         type: integer
       - default: 10
         description: Page size for pagination
@@ -71,12 +222,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/song.GetAllResponse'
+            $ref: '#/definitions/effective-mobile-tz_internal_domain_dto_server_song.GetTextResponse'
         "400":
           description: Bad Request
-          schema:
-            $ref: '#/definitions/domainerr.BadRequest'
-      summary: Get all songs with filter and pagination
+        "500":
+          description: Internal Server Error
+      summary: Get song text with pagination
       tags:
       - songs
 swagger: "2.0"

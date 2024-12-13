@@ -8,7 +8,6 @@ services:
       APP_OMIT_DOTENV: true
       MUSIC_INFO_USE_FAKE: true
       SONG_REPOSITORY_DSN: postgresql://user:password@effective-mobile-tz-db:5432/tzdb?sslmode=disable
-#      GIN_MODE: release
     depends_on:
       effective-mobile-tz-db:
         condition: service_healthy
