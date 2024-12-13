@@ -1,12 +1,11 @@
 services:
   effective-mobile-tz:
-    image: localhost:5000/effective-mobile-tz
+    build: .
     ports:
       - 35080:80
     environment:
       PORT: 80
-      APP_OMIT_DOTENV: true
-      MUSIC_INFO_USE_FAKE: true
+      MUSIC_INFO_BASE_URL: http://localhost:35090
       SONG_REPOSITORY_DSN: postgresql://user:password@effective-mobile-tz-db:5432/tzdb?sslmode=disable
     depends_on:
       effective-mobile-tz-db:

@@ -13,9 +13,7 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(".env"); err != nil {
-		log.Fatal().Msg(fmt.Sprintf("godotenv load: %s", err))
-	}
+	godotenv.Load(".env")
 
 	ctx := context.Background()
 	zerologConfig := zlg.NewConfig().Load()

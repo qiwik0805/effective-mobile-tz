@@ -1,7 +1,10 @@
 LOCAL_BIN := $(CURDIR)/bin
 
-build:
-	docker build -t localhost:5000/effective-mobile-tz:latest . && docker push localhost:5000/effective-mobile-tz:latest
+run:
+	docker-compose up
+
+#build:
+#	docker build -t localhost:5000/effective-mobile-tz:latest . && docker push localhost:5000/effective-mobile-tz:latest
 
 mock/install:
 	go install github.com/gojuno/minimock/v3/cmd/minimock@v3.4.0
